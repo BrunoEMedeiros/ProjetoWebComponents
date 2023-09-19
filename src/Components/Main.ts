@@ -1,14 +1,13 @@
-import { listaPessoas } from "../Model/Pessoa";
+import { Pessoa, listaPessoas } from "../Model/Pessoa";
 
 export class Main extends HTMLElement{
     constructor(){
         super();
-        this.build();
+        const shadow = this.attachShadow({mode: "open"});
+        this.build(shadow);
     }
 
-    build(){
-        const shadow = this.attachShadow({mode: "open"});
-
+    build(shadow: ShadowRoot){
         //Div do container total do crud
         const container_crud: HTMLDivElement = document.createElement("div");
         container_crud.id = "crud-container";
@@ -51,18 +50,32 @@ export class Main extends HTMLElement{
 
         const botao_novo_card: HTMLButtonElement = document.createElement("button");
         botao_novo_card.id = "btn-newcard";
-        botao_novo_card.innerText = "+"
+        botao_novo_card.innerText = "+";
+        botao_novo_card.addEventListener("click",()=>{
+            this.addingPessoa(shadow,container_crud)
+        })
 
         container_botao.append(botao_novo_card);
         crud_header.append(container_inputs, container_botao);
 
-        this.handlePessoas().map((cards)=>{
+        this.handlePessoas().map((cards,)=>{
             crud_body.append(cards);
         })
 
         container_crud.append(crud_header, crud_body);
         shadow.append(container_crud, this.styles());
+        //this.shadowRoot?.append(shadow);
     }
+
+    // static get observedAttributes(){ 
+    //     return ['teste']; 
+    // }
+
+    // attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    //     console.log('changed');
+    //     this.build();
+    // }
+      
 
     handlePessoas(){
         const nodes: Node[] = [];
@@ -83,6 +96,17 @@ export class Main extends HTMLElement{
         });
 
         return nodes;
+    }
+
+    addingPessoa(shadow: ShadowRoot, child: HTMLElement): void{
+        const nome: HTMLInputElement = shadow.querySelector("#input-nome")!
+        const idade: HTMLInputElement = shadow.querySelector("#input-idade")!
+
+        listaPessoas.push(new Pessoa(nome.value, parseInt(idade.value)));
+        
+        //Apagando o componente para atualizacao
+        shadow.removeChild(child);
+        this.build(shadow);
     }
 
     styles(){
