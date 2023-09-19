@@ -1,9 +1,11 @@
 
 export class Pessoa{
+    private id: number = 0;
     private nome: string;
     private idade: number;
     
     constructor(nome : string, idade: number){
+        this.id = this.id + 1;
         this.nome = nome;
         this.idade = idade
     }
@@ -19,11 +21,7 @@ export class Pessoa{
     getIdade(){
         return this.idade
     }
+    getId(){
+        return this.idade
+    }
 }
-
-
-export const listaPessoas: Pessoa[] = [
-    new Pessoa(`bruno`,24),
-    new Pessoa(`andre`,35),
-    new Pessoa(`maria`,32)
-]

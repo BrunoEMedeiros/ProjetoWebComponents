@@ -1,4 +1,10 @@
-import { Pessoa, listaPessoas } from "../Model/Pessoa";
+import { Pessoa} from "../Model/Pessoa";
+
+let listaPessoas: Pessoa[] = [
+    new Pessoa(`bruno`,24),
+    new Pessoa(`andre`,35),
+    new Pessoa(`maria`,32),
+]
 
 export class Main extends HTMLElement{
     constructor(){
@@ -8,6 +14,10 @@ export class Main extends HTMLElement{
     }
 
     build(shadow: ShadowRoot){
+        const link_icones = document.createElement("link");
+        link_icones.rel = "stylesheet";
+        link_icones.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+
         //Div do container total do crud
         const container_crud: HTMLDivElement = document.createElement("div");
         container_crud.id = "crud-container";
@@ -58,26 +68,16 @@ export class Main extends HTMLElement{
         container_botao.append(botao_novo_card);
         crud_header.append(container_inputs, container_botao);
 
-        this.handlePessoas().map((cards,)=>{
+        this.handlePessoas(shadow,container_crud).map((cards,)=>{
             crud_body.append(cards);
         })
 
         container_crud.append(crud_header, crud_body);
-        shadow.append(container_crud, this.styles());
+        shadow.append(link_icones, container_crud, this.styles());
         //this.shadowRoot?.append(shadow);
     }
 
-    // static get observedAttributes(){ 
-    //     return ['teste']; 
-    // }
-
-    // attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    //     console.log('changed');
-    //     this.build();
-    // }
-      
-
-    handlePessoas(){
+    handlePessoas(shadow: ShadowRoot, child: HTMLElement){
         const nodes: Node[] = [];
         listaPessoas.map((pessoas)=> {
 
@@ -90,7 +90,22 @@ export class Main extends HTMLElement{
             const sub: HTMLHeadingElement = document.createElement("h2");
             sub.innerText = String(pessoas.getIdade());
 
-            container.append(titulo,sub);
+            const btn_deletar: HTMLButtonElement = document.createElement("button");
+            btn_deletar.id = "btn-deletar";
+
+            //Eu sei que eu disse que o innerHTML nao deve ser usado, mais neste caso
+            //como a ultilizacao e apenas para o icone o evento em si esta no
+            //<button> e nao no <span>
+            btn_deletar.innerHTML = `
+            <span class="material-symbols-outlined">
+                delete
+            </span>
+            `
+            btn_deletar.addEventListener("click",()=>{
+                this.deletePessoa(pessoas.getId(), shadow, child);
+            })
+
+            container.append(titulo,sub,btn_deletar);
 
             nodes.push(container);
         });
@@ -109,8 +124,20 @@ export class Main extends HTMLElement{
         this.build(shadow);
     }
 
-    styles(){
-        const style = document.createElement("style");
+    deletePessoa(id: number, shadow: ShadowRoot, child: HTMLElement){
+        console.log(listaPessoas.find((pessoa)=>pessoa.getId() == id));
+
+        const nova_lista = listaPessoas.filter((pessoa)=>pessoa.getId() != id);
+        listaPessoas = nova_lista;
+        
+        //Apagando o componente para atualizacao
+        shadow.removeChild(child);
+        this.build(shadow);     
+    }
+
+
+    styles(): HTMLStyleElement{
+        const style: HTMLStyleElement = document.createElement("style");
         style.innerText = `
             #crud-container{
                 width: 800px;
@@ -206,20 +233,47 @@ export class Main extends HTMLElement{
             }
 
             #pessoa-container{
-                height: 100px;
+                min-height: 100px;
+                max-height: 130px;
                 padding: 20px;
-
+            
                 background-color: #7CAFC4;
                 font-size: 10px;
-
+            
                 display: flex;
-                flex-direction: column;
-                justify-content: center;
+                justify-content: space-around;
                 align-items: center;
-
+            
                 border: #7CAFC4 1px solid;
                 border-radius: 30px;
             }
+
+            #btn-deletar{
+                width: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                background-color: #000;
+                color: #fff;
+
+                padding: 10px 20px;
+
+                border: black 1px solid;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+                cursor: pointer;
+            }
+
+            .material-symbols-outlined{
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 200,
+                'GRAD' 0,
+                'opsz' 24
+            }
+
         `
         return style;
     }
