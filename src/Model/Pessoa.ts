@@ -18,9 +18,18 @@ export class Pessoa{
         return this.nome
     }
 
-    getIdade(){
+    setNome(nome: string){
+        this.nome = nome;
+    }
+
+    getIdade(): number{
         return this.idade
     }
+
+    setIdade(idade: number){
+        this.idade = idade
+    }
+
     getId(){
         return this.idade
     }

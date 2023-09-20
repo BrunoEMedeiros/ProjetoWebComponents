@@ -10,6 +10,7 @@ export class Main extends HTMLElement{
     constructor(){
         super();
         const shadow = this.attachShadow({mode: "open"});
+        shadow.append(this.styles());
         this.build(shadow);
     }
 
@@ -61,8 +62,8 @@ export class Main extends HTMLElement{
         const botao_novo_card: HTMLButtonElement = document.createElement("button");
         botao_novo_card.id = "btn-newcard";
         botao_novo_card.innerText = "+";
-        botao_novo_card.addEventListener("click",()=>{
-            this.addingPessoa(shadow,container_crud)
+        botao_novo_card.addEventListener("click", ()=>{
+            this.addingPessoa(shadow, container_crud);
         })
 
         container_botao.append(botao_novo_card);
@@ -73,12 +74,12 @@ export class Main extends HTMLElement{
         })
 
         container_crud.append(crud_header, crud_body);
-        shadow.append(link_icones, container_crud, this.styles());
+        shadow.append(link_icones, container_crud);
         //this.shadowRoot?.append(shadow);
     }
 
     handlePessoas(shadow: ShadowRoot, child: HTMLElement){
-        const nodes: Node[] = [];
+        const elementos: HTMLElement[] = [];
         listaPessoas.map((pessoas)=> {
 
             const container: HTMLDivElement = document.createElement("div")
@@ -90,30 +91,38 @@ export class Main extends HTMLElement{
             const sub: HTMLHeadingElement = document.createElement("h2");
             sub.innerText = String(pessoas.getIdade());
 
-            const btn_deletar: HTMLButtonElement = document.createElement("button");
-            btn_deletar.id = "btn-deletar";
-
             //Eu sei que eu disse que o innerHTML nao deve ser usado, mais neste caso
             //como a ultilizacao e apenas para o icone o evento em si esta no
             //<button> e nao no <span>
+            const btn_deletar: HTMLButtonElement = document.createElement("button");
+            btn_deletar.id = "btn-deletar";
             btn_deletar.innerHTML = `
             <span class="material-symbols-outlined">
                 delete
-            </span>
-            `
-            btn_deletar.addEventListener("click",()=>{
+            </span>`
+            btn_deletar.addEventListener("click",(event: Event)=>{
                 this.deletePessoa(pessoas.getId(), shadow, child);
             })
 
-            container.append(titulo,sub,btn_deletar);
+            const btn_editar: HTMLButtonElement = document.createElement("button");
+            btn_editar.id = "btn-editar";
+            btn_editar.innerHTML = `
+              <span class="material-symbols-outlined">
+                edit
+            </span>`
+            btn_editar.addEventListener("click",()=>{
+                this.handleUpdatePessoa(pessoas.getId(), shadow, child);
+            })
 
-            nodes.push(container);
+            container.append(titulo,sub,btn_deletar, btn_editar);
+
+            elementos.push(container);
         });
 
-        return nodes;
+        return elementos;
     }
 
-    addingPessoa(shadow: ShadowRoot, child: HTMLElement): void{
+    addingPessoa(shadow: ShadowRoot, child: HTMLElement){
         const nome: HTMLInputElement = shadow.querySelector("#input-nome")!
         const idade: HTMLInputElement = shadow.querySelector("#input-idade")!
 
@@ -125,16 +134,44 @@ export class Main extends HTMLElement{
     }
 
     deletePessoa(id: number, shadow: ShadowRoot, child: HTMLElement){
-        console.log(listaPessoas.find((pessoa)=>pessoa.getId() == id));
+        //console.log(listaPessoas.find((pessoa)=>pessoa.getId() == id));
 
         const nova_lista = listaPessoas.filter((pessoa)=>pessoa.getId() != id);
         listaPessoas = nova_lista;
         
         //Apagando o componente para atualizacao
         shadow.removeChild(child);
-        this.build(shadow);     
+        this.build(shadow);  
+        console.log(listaPessoas);
     }
 
+    handleUpdatePessoa(id: number, shadow: ShadowRoot, child: HTMLElement){
+
+        const nome: HTMLInputElement = shadow.querySelector("#input-nome")!
+        const idade: HTMLInputElement = shadow.querySelector("#input-idade")!
+
+       const pessoa_atualizada = listaPessoas.find((pessoa)=>pessoa.getId() == id);
+        if(pessoa_atualizada != null){
+            nome.value = pessoa_atualizada.getNome();
+            idade.value = pessoa_atualizada.getIdade().toString();
+
+            shadow.getElementById("btn-newcard")?.remove();
+
+            const btn_newedit = document.createElement("button");
+            shadow.getElementById("container-botao")?.append(btn_newedit);
+
+            btn_newedit.id = "btn-newcard";
+            btn_newedit.innerText = "SALVAR";
+            btn_newedit.style.fontSize = "26px"
+            btn_newedit.addEventListener("click",()=>{
+                pessoa_atualizada.setNome(nome.value);
+                pessoa_atualizada.setIdade(parseFloat(idade.value));
+                shadow.removeChild(child);
+                this.build(shadow);
+            });
+
+        } 
+    }
 
     styles(): HTMLStyleElement{
         const style: HTMLStyleElement = document.createElement("style");
@@ -248,6 +285,7 @@ export class Main extends HTMLElement{
                 border-radius: 30px;
             }
 
+           
             #btn-deletar{
                 width: 50px;
                 display: flex;
@@ -266,12 +304,22 @@ export class Main extends HTMLElement{
                 cursor: pointer;
             }
 
-            .material-symbols-outlined{
-                font-variation-settings:
-                'FILL' 0,
-                'wght' 200,
-                'GRAD' 0,
-                'opsz' 24
+            #btn-editar{
+                width: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                background-color: #000;
+                color: #fff;
+
+                padding: 10px 20px;
+
+                border: black 1px solid;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+                cursor: pointer;
             }
 
         `
