@@ -18,13 +18,14 @@ export class Main extends HTMLElement {
         const shadow = this.attachShadow({ mode: "open" });
         //Criando link para os google icons, aqui é apenas para o visual dos botoes
         const link = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+        link.rel = 'stylesheet';
+        link.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
+        //Criando link para o css separado, dessa maneira fica mais organizado
         const style = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', "http://localhost/Project/build/main.css");
+        style.rel = 'stylesheet';
+        style.href = "http://localhost/Project/main.css";
         //Uma unica vez na execucao do component eu carrego o CSS e o link para os icones do google
-        shadow.append(style, link);
+        shadow.append(link, style);
         //Chamo o metodo build() que é onde a magica acontece
         this.build(shadow);
     }

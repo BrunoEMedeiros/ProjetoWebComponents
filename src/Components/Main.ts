@@ -9,7 +9,6 @@ let listaPessoas: Pessoa[] = [
 
 //Criando o web component, o nome e ilustrativo, desde que seja uma classe que herda de HTMLElement
 export class Main extends HTMLElement{
-
     /*
         Nos meus construtores de web components eu gosto de fixar coisas que eu nao quero que sofram
         atualizacao, como por exemplo abaixo
@@ -19,20 +18,20 @@ export class Main extends HTMLElement{
         super();
 
         //Crio a shadowDom e configuro ela como "open" ou seja ela pode ser visualizada e modificada pela DOM
-        const shadow = this.attachShadow({mode: "open"});
+        const shadow: ShadowRoot = this.attachShadow({mode: "open"});
 
         //Criando link para os google icons, aqui é apenas para o visual dos botoes
-        const link = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+        const link: HTMLLinkElement = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
 
-        //Criando link para o css separado
-        const style = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', "http://localhost/Project/build/main.css");
+        //Criando link para o css separado, dessa maneira fica mais organizado
+        const style: HTMLLinkElement = document.createElement('link');
+        style.rel = 'stylesheet';
+        style.href = "http://localhost/Project/main.css";
 
         //Uma unica vez na execucao do component eu carrego o CSS e o link para os icones do google
-        shadow.append(style, link);
+        shadow.append(link, style);
 
         //Chamo o metodo build() que é onde a magica acontece
         this.build(shadow);
