@@ -1,0 +1,15 @@
+Bom dia todos, esse projeto foi feito de forma para ser remontado e estudado em sala de aula.
+
+Ele é composto de 2 Web Components, um basico e um complexo.
+O Web Component <my-header> é o cabeçalho da página, demonstrando como montar os elementos visuais
+links e estilos CSS.
+O Web Component <my-main> é onde a verdadeira magica acontece, os objetivos dele são:
+    1 - Demonstrar a execução de um CRUD, ou seja, as 4 operações fundamentais:
+        - Create -> representado pela criação de um novo objeto Pessoa;
+        - Read -> representado pelos cards que mostram para o usuário final uma lista atualizada de Pessoa;
+        - Update -> representado pela atualização dos objetos Pessoa;
+        - Delete -> representado pela exclusão de uma Pessoa da lista;
+    2 - Demonstrar a execução de uma forma de design que chamamos de "single page":
+        - A ideia é que você não recarregue a página para realizar as ações, nem seja redirecionado para outras
+        abas para realizar essas ações.
+    3 - Utilizar padrões de design mais complexos, apelando para os conceitos UX/UI;

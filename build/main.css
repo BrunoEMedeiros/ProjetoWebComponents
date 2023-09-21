@@ -1,0 +1,145 @@
+    #crud-container{
+        width: 800px;
+        height: 500px;
+
+        padding: 20px;
+
+        background-color: #044389;
+        border: #044389 1px solid;
+        border-radius: 20px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #crud-header{
+        height: 40%;
+        padding: 5px;
+
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    #container-input{
+        width: 80%;
+
+        color: white;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        
+        font-size: 18px;
+    }
+
+    #container-input input{
+        padding: 10px;
+        font-size: 10px;
+
+        font-size: 20px;
+
+        border-radius: 20px;
+    }
+
+    #container-botao{
+        height: 100%;
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #btn-newcard{
+        background-color: #1E96FC;
+
+        width: 130px;
+        height: 130px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 50px;
+        color: white;
+
+        border: #1E96FC 1px solid;
+        border-radius: 50%;
+    }
+
+    #btn-newcard:hover{
+        background-color: whitesmoke;
+        color: black;
+        cursor: pointer;
+    }
+
+    #crud-body{
+        height: 80%;
+        padding: 5px;
+
+        overflow: -moz-scrollbars-none; 
+        overflow-y: scroll;    
+
+        display: flex;
+        flex-direction: column;
+        gap: 5px;    
+    }
+
+    #crud-body::-webkit-scrollbar 
+    {
+        width: 0! important
+    }
+
+    #pessoa-container{
+        min-height: 100px;
+        max-height: 130px;
+        padding: 20px;
+
+        background-color: #7CAFC4;
+        font-size: 10px;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        border: #7CAFC4 1px solid;
+        border-radius: 30px;
+    }
+
+
+    #btn-deletar{
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #000;
+        color: #fff;
+
+        padding: 10px 20px;
+
+        border: black 1px solid;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+        cursor: pointer;
+    }
+
+    #btn-editar{
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #000;
+        color: #fff;
+
+        padding: 10px 20px;
+
+        border: black 1px solid;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+        cursor: pointer;
+    }
