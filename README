@@ -14,7 +14,7 @@ O Web Component <my-main> é onde a verdadeira magica acontece, os objetivos del
         abas para realizar essas ações.
     3 - Utilizar padrões de design mais complexos, apelando para os conceitos UX/UI;
 
-Para que o projeto funciona, pela natureza dos navegadores e do protocolo CORS
+Para que o projeto funcione, pela natureza dos navegadores e do protocolo CORS
 ele deve ser aberto em um web server (http).
 Rode os comandos:
     - npm i -> para baixar as biblitecas do projeto
